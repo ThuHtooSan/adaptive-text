@@ -4,19 +4,32 @@ This is a SCSS function that returns a text color (black or white) based on the 
 ![Screenshot](screenshot.png?raw=true)
 
 ## How to use
-1. Copy this function to your `functions.scss` 
+1. Copy the function to your `functions.scss` 
+
 	```bash
-	$ cat adaptive-text.scss >> functions.scss
+	$ sed -n '/@function/,$p' adaptive-text.scss >> functions.scss
 	```
-2. Import your `functions.scss` 
+2. Load required modules to your `functions.scss`
+
+	```bash
+	$ sed -n '/@use/,/@use/p' adaptive-text.scss | cat - functions.scss > /tmp/out && mv /tmp/out functions.scss
+	```
+3. Import your `functions.scss` 
+
 	```scss
 	@use 'functions' as *;
 	// or
 	@import 'functions';
 	```
-3. You are ready to use it! 
+4. You are ready to use it!
+
 	Example:
+
 	```scss
-	color: adaptive-text(oceanblue);
+	@each $key, $val in $some-color-map {
+		.bg-#{$key} {
+			background: $val;
+			color: adaptive-text($val);
+		}
+	}
 	```
-	Replace `oceanblue` with your element's background color.
